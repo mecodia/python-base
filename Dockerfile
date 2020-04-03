@@ -1,16 +1,26 @@
-FROM python:3.8-alpine
+FROM alpine:3.11
 
+# Add generic wait-for-postgres command
 COPY wait-for-postgres.sh /usr/local/bin/wait-for-postgres
 
-ADD https://raw.githubusercontent.com/unbit/uwsgi/master/uwsgidecorators.py /usr/local/lib/python3.8/uwsgidecorators.py
+# Add up to date uwsgidecorators to python
+ADD https://raw.githubusercontent.com/unbit/uwsgi/2.0.18/uwsgidecorators.py /usr/lib/python3.8/uwsgidecorators.py
 
-RUN apk add --no-cache uwsgi uwsgi-python3 postgresql-client postgresql-dev && \
-    apk add --no-cache --virtual build-deps gcc python3-dev musl-dev && \
-    pip install psycopg2-binary psycopg2 && \
-    apk del build-deps && \
-    addgroup -S mecodia && adduser -S mecodia -G mecodia && \
+    # Install uwsgi and needed plugins
+RUN apk add --no-cache uwsgi=~2.0.18 uwsgi-python3 uwsgi-spooler uwsgi-cache \
+    python3=~3.8 py3-pip \
+    postgresql-client=~12 && \
+    # Link some packages and chmod some files
+    ln -s /usr/bin/python3.8 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip && \
     chmod 755 /usr/local/bin/wait-for-postgres && \
-    chmod 655 /usr/local/lib/python3.8/uwsgidecorators.py
+    chmod 655 /usr/lib/python3.8/uwsgidecorators.py && \
+    # Install and build psycopg2-binary and psycopg2
+    apk add --no-cache --virtual build-deps gcc python3-dev postgresql-dev musl-dev && \
+    pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir psycopg2-binary psycopg2 && \
+    apk del build-deps && \
+    # Add a user so we are more secure
+    addgroup -S mecodia && adduser -S mecodia -G mecodia
+
 
 WORKDIR /home/mecodia
 USER mecodia
@@ -27,4 +37,4 @@ ENV PATH=/home/mecodia/.local/bin:$PATH \
     UWSGI_MAX_WORKER_LIFETIME=86400 \
     UWSGI_RELOAD_ON_RSS=512 \
     UWSGI_WORKER_RELOAD_MERCY=60 \
-    UWSGI_PLUGINS=python
+    UWSGI_PLUGINS=python3,spooler,cache
