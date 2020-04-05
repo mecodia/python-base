@@ -21,11 +21,8 @@ RUN apk add --no-cache uwsgi=~2.0.18 uwsgi-python3 uwsgi-spooler uwsgi-cache \
     # Add a user so we are more secure
     addgroup -S mecodia && adduser -S mecodia -G mecodia
 
-
 WORKDIR /home/mecodia
-USER mecodia
-ENV PATH=/home/mecodia/.local/bin:$PATH \
-    UWSGI_STRICT=1 \
+ENV UWSGI_STRICT=1 \
     UWSGI_MASTER=1 \
     UWSGI_WORKERS=2 \
     UWSGI_ENABLE_THREADS=1 \
@@ -38,3 +35,13 @@ ENV PATH=/home/mecodia/.local/bin:$PATH \
     UWSGI_RELOAD_ON_RSS=512 \
     UWSGI_WORKER_RELOAD_MERCY=60 \
     UWSGI_PLUGINS=python3,spooler,cache
+
+USER root
+
+ONBUILD COPY . /home/mecodia
+ONBUILD RUN touch .build/additional-packackes.txt && touch .build/build-packages.txt && \
+            apk add --no-cache $(cat .build/additional-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
+            apk add --no-cache --virtual build-deps gcc python3-dev musl-dev $(cat .build/build-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
+            pip install --no-cache-dir -r .build/requirements.txt && \
+            apk del build-deps
+ONBUILD USER mecodia
