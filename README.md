@@ -8,7 +8,7 @@ This image is based on alpine:3.11 and provides the following features:
 * Python 3.8
 * uwsgi with python3, spooler and cache plugin loaded and sane default settings
 * pyscop2 and pyscop2-binary
-* wait-for-postgres command
+* wait-for-postgres command (wait for the DB defined in $POSTGRES_HOST)
 * Possibility to add additional packages and build-only packages
 
 ## How to use
@@ -46,6 +46,7 @@ The corresponding dockerfile in the subproject using this base image can be as c
 
     FROM mecodia/python-base:latest
 
+    ENV POSTGRES_HOST db.example.com
     RUN mkdir -p var/static
     
 The image should be ran with the following command as the bare minimum:
