@@ -21,10 +21,12 @@ pipeline {
                 env.GIT_VERSION = sh(returnStdout: true, script: "git describe --tags --long --dirty --always").trim()
                 def customImage = docker.build("${env.DOCKER_REPO}:${env.GIT_VERSION}", ".")
 
-        customImage.push("latest")
-        customImage.push(env.GIT_VERSION)
-      }
+                customImage.push("latest")
+                customImage.push(env.GIT_VERSION)
+              }
+            }
+            slackSend message: "Pushed new mecodia/python-base:${env.GIT_VERSION} image", channel: '#operations'
+          }
+       }
     }
-    slackSend message: "Pushed new mecodia/python-base:${env.GIT_VERSION} image", channel: '#operations'
-  }
 }
