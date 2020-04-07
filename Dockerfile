@@ -22,7 +22,9 @@ RUN apk add --no-cache uwsgi=~2.0.18 uwsgi-python3 uwsgi-spooler uwsgi-cache \
     addgroup -S mecodia && adduser -S mecodia -G mecodia
 
 WORKDIR /home/mecodia
-ENV UWSGI_STRICT=1 \
+ARG GIT_BUILD_VERSION=unknown
+ENV GIT_BUILD_VERSION=$GIT_BUILD_VERSION \
+    UWSGI_STRICT=1 \
     UWSGI_MASTER=1 \
     UWSGI_WORKERS=2 \
     UWSGI_ENABLE_THREADS=1 \
