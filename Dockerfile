@@ -39,9 +39,8 @@ ENV UWSGI_STRICT=1 \
 USER root
 
 ONBUILD COPY . /home/mecodia
-ONBUILD RUN touch .build/additional-packackes.txt && touch .build/build-packages.txt && \
-            apk add --no-cache $(cat .build/additional-packackes.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
+ONBUILD RUN apk add --no-cache $(cat .build/additional-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
             apk add --no-cache --virtual build-deps gcc python3-dev musl-dev $(cat .build/build-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
-            pip install --no-cache-dir -r .build/requirements.txt && \
+            pip install --no-cache-dir . && \
             apk del build-deps
 ONBUILD USER mecodia
