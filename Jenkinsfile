@@ -8,8 +8,7 @@ pipeline {
 	  when {
         beforeAgent true
 	    anyOf {
-	      branch 'staging'
-	      branch 'production'
+	      branch 'master'
 	    }
 	  }
       environment {
