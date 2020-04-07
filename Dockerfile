@@ -22,9 +22,7 @@ RUN apk add --no-cache uwsgi=~2.0.18 uwsgi-python3 uwsgi-spooler uwsgi-cache \
     addgroup -S mecodia && adduser -S mecodia -G mecodia
 
 WORKDIR /home/mecodia
-ARG GIT_BUILD_VERSION=unknown
-ENV GIT_BUILD_VERSION=$GIT_BUILD_VERSION \
-    UWSGI_STRICT=1 \
+ENV UWSGI_STRICT=1 \
     UWSGI_MASTER=1 \
     UWSGI_WORKERS=2 \
     UWSGI_ENABLE_THREADS=1 \
@@ -38,11 +36,11 @@ ENV GIT_BUILD_VERSION=$GIT_BUILD_VERSION \
     UWSGI_WORKER_RELOAD_MERCY=60 \
     UWSGI_PLUGINS=python3,spooler,cache
 
-USER root
-
+ONBUILD ARG GIT_BUILD_VERSION=unknown
+ONBUILD ENV GIT_BUILD_VERSION=$GIT_BUILD_VERSION
 ONBUILD COPY . /home/mecodia
 ONBUILD RUN apk add --no-cache $(cat .build/runtime-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
             apk add --no-cache --virtual build-deps gcc python3-dev musl-dev $(cat .build/build-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
             pip install --no-cache-dir . && \
-            apk del build-deps
+            apk del build-deps && chown -R mecodia:mecodia .
 ONBUILD USER mecodia
