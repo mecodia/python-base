@@ -25,14 +25,9 @@ The project structure should look roughly like this:
     ├── docker-compose.yml
     └── project
         ├── .build
-        │   └── additional-packackes.txt
+        │   └── runtime-packackes.txt
         │   └── build-packages.txt
-        │   └── requirements.txt
-        │   └── dev-requirements.txt
-        ├── Dockerfile
-        ├── __init__.py
-        ├── init.sh
-        ├── knigge
+        ├── knigge
         │   ├── __init__.py
         │   ├── apps
         │   ├── settings
@@ -40,7 +35,9 @@ The project structure should look roughly like this:
         │   ├── templates
         │   ├── urls.py
         │   └── wsgi.py
-        └── manage.py
+        ├── Dockerfile
+        ├── init.sh
+        └── setup.py
     
 The corresponding dockerfile in the subproject using this base image can be as close to zero as:
 
