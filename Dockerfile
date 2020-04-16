@@ -41,6 +41,6 @@ ONBUILD ENV GIT_BUILD_VERSION=$GIT_BUILD_VERSION
 ONBUILD COPY . /home/mecodia
 ONBUILD RUN apk add --no-cache $(cat .build/runtime-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
             apk add --no-cache --virtual build-deps gcc python3-dev musl-dev $(cat .build/build-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
-            pip install --no-cache-dir . && \
+            pip install -e --no-cache-dir . && \
             apk del build-deps && chown -R mecodia:mecodia .
 ONBUILD USER mecodia
