@@ -19,7 +19,7 @@ pipeline {
             script {
               docker.withRegistry('', 'mecodia-docker-hub') {
                 env.GIT_VERSION = sh(returnStdout: true, script: "git describe --tags --long --dirty --always").trim()
-                def customImage = docker.build("${env.DOCKER_REPO}:${env.GIT_VERSION}", ".")
+                def customImage = docker.build("${env.DOCKER_REPO}:${env.GIT_VERSION}", "--pull .")
 
                 customImage.push("latest")
                 customImage.push(env.GIT_VERSION)
