@@ -37,6 +37,7 @@ The project structure should look roughly like this:
         │   └── wsgi.py
         ├── Dockerfile
         ├── init.sh
+        ├── test.sh
         └── setup.py
     
 The corresponding dockerfile in the subproject using this base image can be as close to zero as:
