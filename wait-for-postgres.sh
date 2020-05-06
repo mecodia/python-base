@@ -4,5 +4,5 @@ until pg_isready -h $POSTGRES_HOST -U postgres; do
   sleep 1
 done
 
->&2 echo "Postgres is up - moving to manage.py"
+>&2 echo "Postgres is up - moving to the next step"
 exec "$@"
