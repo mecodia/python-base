@@ -1,6 +1,6 @@
 # Docker Base Image for mecodia GmbH Django Projects
 
-<img alt="Docker Automated build" src="https://img.shields.io/docker/automated/mecodia/python-base">
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/mecodia/python-base/latest)](https://hub.docker.com/r/mecodia/python-base)
 
 This image was specifically crafted to be as small as possible while also giving a good basic packaging.
 We are trying to follow the best practices of Docker and Kubernetes with this image to improve speed and security.
@@ -59,3 +59,8 @@ The image should be ran with the following command as the bare minimum:
 or if we use a prerun script:
 
     sh ./init.sh uwsgi --http-socket 0.0.0.0:8000 --module myproject.wsgi:application --show-config
+
+## Release Process
+
+- For a new release and autobuild tag a commit with e.g. `v1.2`
+- For building public test images, `v1.2-rc1` is also possible.
