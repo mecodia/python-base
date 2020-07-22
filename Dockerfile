@@ -14,7 +14,7 @@ RUN apk add --no-cache uwsgi=~2.0.18 uwsgi-python3 uwsgi-spooler uwsgi-cache \
     # Install postgres client for the wait-for-postgres script
     postgresql-client=~12 && \
     # Link some python3 and pip3 to default pythond and pip
-    ln -s /usr/bin/python3.8 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip && \
+    ln -fs /usr/bin/python3.8 /usr/bin/python && ln -fs /usr/bin/pip3 /usr/bin/pip && \
     # Make the copied files execuable and readable for all
     chmod 755 /usr/local/bin/wait-for-postgres && \
     chmod 655 /usr/lib/python3.8/uwsgidecorators.py && \
@@ -56,7 +56,7 @@ ONBUILD RUN apk add --no-cache $(cat .build/runtime-packages.txt | sed -e ':a;N;
             # Install packages we need to install a python packages that needs to be compiled. These will be deleted afterwards.
             apk add --no-cache --virtual build-deps gcc python3-dev musl-dev $(cat .build/build-packages.txt | sed -e ':a;N;$!ba;s/\n/ /g') && \
             # Install the current folder as editable so we have it on the pythonpath but don't need to actually package it
-            pip install --no-cache-dir -e . && \
+            pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -e . && \
             # Remove build packages and chown everything in here for our user
             apk del build-deps && chown -R mecodia:mecodia .
 # Run everything afterwards as the mecodia user
