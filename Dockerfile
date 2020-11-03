@@ -40,7 +40,11 @@ ENV UWSGI_STRICT=1 \
     UWSGI_MAX_WORKER_LIFETIME=86400 \
     UWSGI_RELOAD_ON_RSS=512 \
     UWSGI_WORKER_RELOAD_MERCY=60 \
-    UWSGI_PLUGINS=python3,spooler,cache
+    UWSGI_PLUGINS=python3,spooler,cache \
+    # Ignore Errors when client closes the connection prematurely
+    UWSGI_IGNORE_SIGPIPE=1 \
+    UWSGI_IGNORE_WRITE-ERRORS=1 \
+    UWSGI_DISABLE_WRITE_EXCEPTION=1
 
 # Here the real magic happens
 # This is run if somebody FROMs this image.
