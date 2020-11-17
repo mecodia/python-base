@@ -7,7 +7,7 @@ We are trying to follow the best practices of Docker and Kubernetes with this im
 
 ## Features
 
-This image is based on alpine:3.11 and provides the following features:
+This image is based on alpine:3.12 and provides the following features:
 
 - Python 3.8
 - uwsgi with python3, spooler and cache plugin loaded and sane default settings
