@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 # Add generic wait-for-postgres command
 COPY wait-for-postgres.sh /usr/local/bin/wait-for-postgres
