@@ -45,6 +45,7 @@ COPY --from=uwsgi_builder /tmp/build/escape_json_plugin.so /usr/lib/uwsgi/
 ENV UWSGI_INI=/etc/uwsgi_defaults.ini
 
 WORKDIR /home/mecodia
+ENTRYPOINT ["uwsgi"]
 
 # Here the real magic happens
 # This is run if somebody FROMs this image.
