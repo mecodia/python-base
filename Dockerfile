@@ -21,9 +21,9 @@ ADD https://raw.githubusercontent.com/unbit/uwsgi/2.0.18/uwsgidecorators.py /usr
 
 # Install uwsgi and needed plugins
 RUN apk add --no-cache uwsgi=~2.0 uwsgi-python3 uwsgi-spooler uwsgi-cache uwsgi-logfile\
-    # Install python3.8 and pip from the alpine repository, since they provide it in alipne 3.11
+    # Install python3.8 and pip from the alpine repository, since they provide it in alpine 3.11
     # This is good enough for us and enables us to install precompiled packages from apk
-    python3=~3.8 py3-pip \
+    python3=~3.8 py3-pip py3-wheel\
     # Install postgres client for the wait-for-postgres script
     postgresql-client=~13 && \
     # Link python3 and pip3 to default python and pip
