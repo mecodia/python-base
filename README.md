@@ -7,9 +7,9 @@ We are trying to follow the best practices of Docker and Kubernetes with this im
 
 ## Features
 
-This image is based on alpine:3.12 and provides the following features:
+This image is based on alpine linux and provides the following features:
 
-- Python 3.8
+- Python 3.x
 - uwsgi with python3, spooler and cache plugin loaded and sane default settings
 - pyscop2 and pyscop2-binary
 - wait-for-postgres command (wait for the DB defined in \$POSTGRES_HOST)
@@ -17,7 +17,7 @@ This image is based on alpine:3.12 and provides the following features:
 
 ## How to use
 
-This images is intended to be used with a standard python3.8 and django2.2 project.
+This images is intended to be used with a standard python3.x and django2.x project.
 
 The project structure should look roughly like this:
 
