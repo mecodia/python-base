@@ -1,14 +1,14 @@
-FROM alpine:3.13 as uwsgi_builder
+FROM alpine:3.15 as uwsgi_builder
 WORKDIR /tmp/build
 
 RUN apk add --no-cache uwsgi=~2.0 uwsgi-python3 gcc linux-headers musl-dev libcap-dev openssl-dev pcre-dev zlib-dev && \
     # Link python3 and pip3 to default python and pip
-    ln -fs /usr/bin/python3.8 /usr/bin/python && ln -fs /usr/bin/pip3 /usr/bin/pip 
+    ln -fs /usr/bin/python3.9 /usr/bin/python && ln -fs /usr/bin/pip3 /usr/bin/pip 
 ADD https://raw.githubusercontent.com/velebit-ai/uwsgi-json-logging-plugin/master/escape_json.c escape_json.c
 RUN uwsgi --build-plugin escape_json.c
 
 
-FROM alpine:3.13 as base
+FROM alpine:3.15 as base
 
 # Add generic wait-for-postgres command
 COPY wait-for-postgres.sh /usr/local/bin/wait-for-postgres
@@ -17,20 +17,20 @@ COPY wait-for-postgres.sh /usr/local/bin/wait-for-postgres
 COPY uwsgi.ini /etc/uwsgi_defaults.ini
 
 # Add up to date uwsgidecorators to python
-ADD https://raw.githubusercontent.com/unbit/uwsgi/2.0.18/uwsgidecorators.py /usr/lib/python3.8/uwsgidecorators.py
+ADD https://raw.githubusercontent.com/unbit/uwsgi/2.0.20/uwsgidecorators.py /usr/lib/python3.9/uwsgidecorators.py
 
 # Install uwsgi and needed plugins
 RUN apk add --no-cache uwsgi=~2.0 uwsgi-python3 uwsgi-spooler uwsgi-cache uwsgi-logfile\
-    # Install python3.8 and pip from the alpine repository, since they provide it in alpine 3.11
+    # Install python3.9 and pip from the alpine repository, since they provide it in alpine 3.11+
     # This is good enough for us and enables us to install precompiled packages from apk
-    python3=~3.8 py3-pip py3-wheel\
+    python3=~3.9 py3-pip py3-wheel\
     # Install postgres client for the wait-for-postgres script
-    postgresql-client=~13 && \
+    postgresql13-client=~13 && \
     # Link python3 and pip3 to default python and pip
-    ln -fs /usr/bin/python3.8 /usr/bin/python && ln -fs /usr/bin/pip3 /usr/bin/pip && \
+    ln -fs /usr/bin/python3.9 /usr/bin/python && ln -fs /usr/bin/pip3 /usr/bin/pip && \
     # Make the copied files execuable and readable for all
     chmod 755 /usr/local/bin/wait-for-postgres && \
-    chmod 655 /usr/lib/python3.8/uwsgidecorators.py && \
+    chmod 655 /usr/lib/python3.9/uwsgidecorators.py && \
     # Install and build psycopg2-binary and psycopg2, so it does not matter which one a package has in requirements.
     apk add --no-cache --virtual build-deps gcc python3-dev postgresql-dev musl-dev && \
     pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir psycopg2-binary psycopg2 && \
