@@ -62,5 +62,4 @@ or if we use a prerun script:
 
 ## Release Process
 
-- For a new release and autobuild tag a commit with e.g. `v1.2`
-- For building public test images, `v1.2-rc1` is also possible.
+Edit and use the `build.sh` script to push a new image tag to docker hub.
